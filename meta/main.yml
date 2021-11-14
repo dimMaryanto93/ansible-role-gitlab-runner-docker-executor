@@ -1,0 +1,33 @@
+galaxy_info:
+  role_name: gitlab_runner_docker_executor
+  author: dimmaryanto93
+  description: Configure gitlab-runner using docker executor for linux distribution
+  company: PT. Tabeldata Informatika
+
+  license: license (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: EL
+    versions:
+      - 8
+      - 7
+  - name: Ubuntu
+    versions:
+      - focal
+      - bionic
+  - name: Debian
+    versions:
+      - buster
+      - stretch
+
+  galaxy_tags: 
+  - gitlab
+  - gitlabrunner
+  - ci
+  - docker
+  
+dependencies: 
+  - dimmaryanto93.docker
+  - dimmaryanto93.gitlab_runner
