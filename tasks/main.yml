@@ -1,2 +1,11 @@
 ---
-# tasks file for ansible-role-gitlab-runner-docker-executor
+- name: "Gitlab verify"
+  shell: 
+    cmd: gitlab-runner verify --name {{ inventory_hostname }}-docker-executor
+  register: gitlab_runner_exist
+  failed_when: false
+
+- name: "Gitlab register docker executor"
+  shell: 
+    cmd: gitlab-runner register -r={{ gitlab_register_token }} --name={{ inventory_hostname }}-docker-executor  --non-interactive --url={{ GITLAB_URL }} --clone-url={{ GITLAB_CLONE_URL }}  --executor=docker --docker-image="alpine:latest"  --docker-disable-entrypoint-overwrite=false --docker-oom-kill-disable=false  --env="DOCKER_TLS_CERTDIR=" --docker-privileged=true --tag-list="docker"
+  when: gitlab_runner_exist.rc == 1
