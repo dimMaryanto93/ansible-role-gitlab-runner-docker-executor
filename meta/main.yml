@@ -28,6 +28,4 @@ galaxy_info:
   - ci
   - docker
   
-dependencies: 
-  - dimmaryanto93.docker
-  - dimmaryanto93.gitlab_runner
+dependencies: []

@@ -7,5 +7,5 @@
 
 - name: "Gitlab register docker executor"
   shell: 
-    cmd: gitlab-runner register -r={{ gitlab_register_token }} --name={{ inventory_hostname }}-docker  --non-interactive --url={{ gitlab_url }} --clone-url={{ gitlab_clone_url }}  --executor=docker --docker-image="alpine:latest" --docker-tlsverify=false --docker-disable-entrypoint-overwrite=false --docker-oom-kill-disable=false  --env="DOCKER_TLS_CERTDIR=" --docker-privileged=true --tag-list="docker" --docker-extra-hosts={{ gitlab_runner_extra_host }} --docker-volumes={{ gitlab_runner_docker_volumes }}
+    cmd: gitlab-runner register -r={{ gitlab_register_token }} --name={{ inventory_hostname }}-docker  --non-interactive --url={{ gitlab_url }} --clone-url={{ gitlab_clone_url }}  --executor=docker --docker-image="alpine:latest" --docker-tlsverify=false --docker-disable-entrypoint-overwrite=false --docker-oom-kill-disable=false  --env="DOCKER_TLS_CERTDIR=" --docker-privileged=true --tag-list="docker" --docker-extra-hosts={{ gitlab_runner_extra_host | to_yaml }} --docker-volumes={{ gitlab_runner_docker_volumes | to_yaml }}
   when: gitlab_runner_exist.rc == 1
