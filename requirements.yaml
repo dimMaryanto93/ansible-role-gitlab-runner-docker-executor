@@ -1,6 +1,0 @@
----
-collections:
-  - ansible.posix
-roles:
-  - dimmaryanto93.docker
-  - dimmaryanto93.gitlab_runner

@@ -1,3 +1,10 @@
 ---
 gitlab_url: http://192.168.88.10
-gitlab_clone_url: "{{ gitlab_url }}"
+nexus_oss_ip: 10.12.12.5
+gitlab_clone_url: {{ gitlab_url }}
+gitlab_register_token: default-token-runner
+gitlab_runner_extra_host: 
+  - private.nexus-registry.docker.local:{{ nexus_oss_ip }}
+gitlab_runner_docker_volumes: 
+  - /certs/client
+  - /cache
