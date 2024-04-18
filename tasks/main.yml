@@ -12,6 +12,7 @@
       -r={{ gitlab_register_token }} \
       --name={{ inventory_hostname }}-docker  \
       --non-interactive \
+      --request-concurrency={{ runner_concurrent_jobs_num | default('5') }} \
       --url={{ gitlab_url }} \
       --clone-url={{ gitlab_clone_url }} \
       --executor=docker \
