@@ -8,3 +8,4 @@ gitlab_runner_extra_host:
 gitlab_runner_docker_volumes: 
   - /certs/client
   - /cache
+  - /var/run/docker.sock:/var/run/docker.sock
