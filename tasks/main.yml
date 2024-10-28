@@ -1,4 +1,28 @@
 ---
+- name: Setting host facts using complex arguments
+  set_fact:
+    gitlab_baseurl_api: "{{ gitlab_url }}{{ gitlab_api_context_path }}"
+- name: Setting host facts to use gitlab api v4 variables
+  set_fact:
+    gitlab_runner_api: "{{ gitlab_baseurl_api }}/runners"
+
+- name: Create runner instance on gitlab
+  uri:
+    url: "{{ gitlab_runner_api }}/user/runners"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_access_token }}"
+    method: POST
+    return_content: yes
+    status_code: 200
+    body:
+      runner_type: "instance_type"
+      run_untagged: true
+      description: "runner-{{ inventory_hostname }}-docker"
+      tag_list: ["docker"]
+      access_level: "not_protected"
+    body_format: form-urlencoded
+    register: gitlab_runner_token
+
 - name: "Gitlab verify"
   shell: 
     cmd: gitlab-runner verify --name {{ inventory_hostname }}-docker
@@ -9,7 +33,7 @@
   shell: 
     cmd: |
       gitlab-runner register \
-      -r={{ gitlab_register_token }} \
+      -r={{ gitlab_runner_token.token }} \
       --name={{ inventory_hostname }}-docker  \
       --non-interactive \
       --request-concurrency={{ runner_concurrent_jobs_num | default('5') }} \

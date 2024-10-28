@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-role-gitlab-runner-docker-executor
+gitlab_api_context_path: /api/v4
+gitlab_url: "{{ gitlab_proto | default('http') }}://{{ gitlab_address | default('localhost') }}"
