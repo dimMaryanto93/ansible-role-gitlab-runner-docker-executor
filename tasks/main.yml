@@ -4,11 +4,11 @@
     gitlab_baseurl_api: "{{ gitlab_url }}{{ gitlab_api_context_path }}"
 - name: Setting host facts to use gitlab api v4 variables
   set_fact:
-    gitlab_runner_api: "{{ gitlab_baseurl_api }}/runners"
+    gitlab_runner_api: "{{ gitlab_baseurl_api }}/user/runners"
 
 - name: Create runner instance on gitlab
   uri:
-    url: "{{ gitlab_runner_api }}/user/runners"
+    url: "{{ gitlab_runner_api }}"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_access_token }}"
     method: POST
