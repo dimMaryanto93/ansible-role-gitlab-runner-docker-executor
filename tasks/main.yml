@@ -1,36 +1,40 @@
 ---
-- name: Setting host facts using complex arguments
-  set_fact:
-    gitlab_baseurl_api: "{{ gitlab_url }}{{ gitlab_api_context_path }}"
-- name: Setting host facts to use gitlab api v4 variables
-  set_fact:
-    gitlab_runner_api: "{{ gitlab_baseurl_api }}/user/runners"
-
-- name: Create runner instance on gitlab
-  uri:
-    url: "{{ gitlab_runner_api }}"
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_private_access_token }}"
-    method: POST
-    return_content: yes
-    status_code: 201
-    body:
-      runner_type: "instance_type"
-      run_untagged: true
-      description: "runner-{{ inventory_hostname }}-docker"
-      tag_list: ["docker"]
-      access_level: "not_protected"
-    body_format: form-urlencoded
-  register: gitlab_runner_token
-
-- debug:
-    msg: "{{ gitlab_runner_token.json['token'] }}"
-
 - name: "Gitlab verify"
   shell: 
     cmd: gitlab-runner verify --name {{ inventory_hostname }}-docker
   register: gitlab_runner_exist
   failed_when: false
+
+- debug:
+    msg: "Gitlab runner already registered => {{ gitlab_runner_exist.rc }}"
+
+- name: Create token over API 
+  when: gitlab_runner_exist.rc == 1
+  block:
+  - name: Setting host facts using complex arguments
+    set_fact:
+      gitlab_baseurl_api: "{{ gitlab_url }}{{ gitlab_api_context_path }}"
+  - name: Setting host facts to use gitlab api v4 variables
+    set_fact:
+      gitlab_runner_api: "{{ gitlab_baseurl_api }}/user/runners"
+  - name: Create runner instance on gitlab
+    uri:
+      url: "{{ gitlab_runner_api }}"
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_private_access_token }}"
+      method: POST
+      return_content: yes
+      status_code: 201
+      body:
+        runner_type: "instance_type"
+        run_untagged: true
+        description: "runner-{{ inventory_hostname }}-docker"
+        tag_list: ["docker"]
+        access_level: "not_protected"
+      body_format: form-urlencoded
+    register: gitlab_runner_token
+  - debug:
+      msg: "{{ gitlab_runner_token.json['token'] }}"
 
 - name: "Gitlab register docker executor"
   shell: 
