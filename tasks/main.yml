@@ -23,6 +23,9 @@
     body_format: form-urlencoded
   register: gitlab_runner_token
 
+- debug:
+    msg: "{{ gitlab_runner_token.json['token'] }}"
+
 - name: "Gitlab verify"
   shell: 
     cmd: gitlab-runner verify --name {{ inventory_hostname }}-docker
@@ -33,7 +36,7 @@
   shell: 
     cmd: |
       gitlab-runner register \
-      -r={{ gitlab_runner_token.token }} \
+      -r={{ gitlab_runner_token.json['token'] }} \
       --name={{ inventory_hostname }}-docker  \
       --non-interactive \
       --request-concurrency={{ runner_concurrent_jobs_num | default('5') }} \

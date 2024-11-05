@@ -1,4 +1,4 @@
-gitlab-runner01_host    ansible_port=22 ansible_user=admin ansible_host=10.12.12.2
+gitlab-runner01_host    ansible_port=22 ansible_user=user ansible_host=10.10.30.51
 
 [gitlab-runner]
 gitlab-runner01_host
