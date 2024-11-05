@@ -13,7 +13,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_access_token }}"
     method: POST
     return_content: yes
-    status_code: 200
+    status_code: 201
     body:
       runner_type: "instance_type"
       run_untagged: true
