@@ -21,7 +21,7 @@
       tag_list: ["docker"]
       access_level: "not_protected"
     body_format: form-urlencoded
-    register: gitlab_runner_token
+  register: gitlab_runner_token
 
 - name: "Gitlab verify"
   shell: 
